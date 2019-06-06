@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Info from "./components/info";
+import Form from "./components/form";
+import Repos from "./components/repos";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//const API_KEY = "37ebe34a652581158987717baf749ad424249e4b";
+
+
+
+class App extends React.Component {
+
+  gettingRepos = async (event) => {
+    event.preventDefault();
+
+    var owner = event.target.elements.name.value;
+    var repo = event.target.elements.name.value;
+        
+    const api_url = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    const data = await api_url.json();
+    console.log(data);
+  }
+
+  render() {
+    return (
+      <div>
+        <Info />
+        <Form reposMethod={this.gettingRepos} />
+        <Repos />
+      </div>
+    );
+  }
 }
 
 export default App;
