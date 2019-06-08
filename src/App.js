@@ -9,16 +9,22 @@ import Repos from "./components/repos";
 
 class App extends React.Component {
 
-  gettingRepos = async (event) => {
-    event.preventDefault();
+  gettingRepos = async (e) => {
+    e.preventDefault();
 
-    var owner = event.target.elements.name.value;
-    var repo = event.target.elements.name.value;
+    const owner = e.target.elements.owner.value;
+    const repo = e.target.elements.repo.value;
         
     const api_url = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
     const data = await api_url.json();
     console.log(data);
   }
+
+  /*gettingRepos = async ({repo, owner}) => {
+    const api_url = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    const data = await api_url.json();
+    console.log(data);
+  }*/
 
   render() {
     return (
@@ -30,5 +36,7 @@ class App extends React.Component {
     );
   }
 }
+
+
 
 export default App;
