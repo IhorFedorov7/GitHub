@@ -3,35 +3,47 @@ import Info from "./components/info";
 import Form from "./components/form";
 import Repos from "./components/repos";
 
-//const API_KEY = "37ebe34a652581158987717baf749ad424249e4b";
-
-
-
 class App extends React.Component {
+
+  state = {
+    full_name: undefined,
+    stargazers_count: undefined,
+    error: undefined
+  }
 
   gettingRepos = async (e) => {
     e.preventDefault();
 
-    const owner = e.target.elements.owner.value;
-    const repo = e.target.elements.repo.value;
-        
-    const api_url = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    const data = await api_url.json();
-    console.log(data);
-  }
+    let owner = e.target.elements.owner.value;
 
-  /*gettingRepos = async ({repo, owner}) => {
-    const api_url = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    const data = await api_url.json();
-    console.log(data);
-  }*/
+    if(owner) {
+      const api_url = await fetch(`https://api.github.com/repos/${owner}`);
+      const data = await api_url.json();
+
+      this.setState({
+        full_name: data.full_name,
+        stargazers_count: data.stargazers_count,
+        error: undefined 
+      });
+    } else {
+      this.setState({
+        full_name: undefined,
+        stargazers_count: undefined,
+        error: "Сори" 
+      });
+    }
+  }
 
   render() {
     return (
       <div>
         <Info />
         <Form reposMethod={this.gettingRepos} />
-        <Repos />
+        <Repos 
+          full_name={this.state.full_name}
+          stargazers_count={this.state.stargazers_count}
+          error={this.state.error}
+        />
       </div>
     );
   }
