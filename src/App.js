@@ -1,52 +1,51 @@
-import React from "react";
-import Info from "./components/info";
+import React, { useState } from "react";
 import Form from "./components/form";
 import Repos from "./components/repos";
+import reposService, { validateRepos } from "./reposService";
+import "./App.css";
 
-class App extends React.Component {
+const App = () => {
 
-  state = {
-    full_name: undefined,
-    stargazers_count: undefined,
-    error: undefined
-  }
+  const [repositories,  setRepositories] = useState([]);
+  const [error,  setError] = useState("");
 
-  gettingRepos = async (e) => {
+  const getRepos = (e) => {
     e.preventDefault();
+    setError("");
 
-    let owner = e.target.elements.owner.value;
+    const { value } = e.target.elements.owner;
 
-    if(owner) {
-      const api_url = await fetch(`https://api.github.com/repos/${owner}`);
-      const data = await api_url.json();
+    if(!validateRepos(value)) { 
+      setError("Repository not found");
+      return; 
+    };
 
-      this.setState({
-        full_name: data.full_name,
-        stargazers_count: data.stargazers_count,
-        error: undefined 
-      });
-    } else {
-      this.setState({
-        full_name: undefined,
-        stargazers_count: undefined,
-        error: "Сори" 
-      });
-    }
+      reposService(
+        value,
+        repositories,
+        setRepositories,
+      )
+      .catch(()=>{
+        setError("Repository not found");
+      })
+
+      e.target.elements.owner.value ="";
+  }
+  const removeRepo = repo_id => {
+    setRepositories(repositories.filter(r => r.id !== repo_id))
   }
 
-  render() {
-    return (
-      <div>
-        <Info />
-        <Form reposMethod={this.gettingRepos} />
-        <Repos 
-          full_name={this.state.full_name}
-          stargazers_count={this.state.stargazers_count}
-          error={this.state.error}
-        />
-      </div>
-    );
-  }
+  return (
+    <div id="block">
+      <Form getRepos={getRepos} />
+      <p id="eroor">{error}</p>
+      {repositories.length ? 
+      <Repos 
+        repositories={repositories}
+        removeRepo={removeRepo}
+      /> : ""}
+    </div>
+  );
 }
 
 

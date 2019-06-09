@@ -1,29 +1,45 @@
 import React from "react";
+import "./repos.css"
 
-class Repos extends React.Component {
-    render() {
-        return (
-            <div>
-            {this.props.full_name &&
-                <table>
-                    <thead>
-                        <tr>
-                            <th>repository name</th>
-                            <th>stars</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <tr>
-                                <td>{this.props.full_name}</td>
-                                <td>{this.props.stargazers_count}</td>
+const  Repos = props => {
+    
+    const { 
+        repositories,
+        removeRepo,
+    } = props;
+
+    return (
+        <div id="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Repository name</th>
+                        <th>Stars</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {
+                        repositories.map( repo => (  
+                            <tr key={repo.id}>
+                                <td>{repo.full_name}</td>
+                                <td>{repo.stargazers_count}</td>
+                                <td id="right">
+                                    <button 
+                                        type="button"
+                                        onClick={() => removeRepo(repo.id)}
+                                    >
+                                        <p>X</p>
+                                    </button>
+                                </td>
                             </tr> 
-                    </tbody>
-                </table>
-            } 
-            <p>{ this.props.error}</p>
-            </div>
-        );
-    }
+                        ))
+                    }  
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
 export default Repos;

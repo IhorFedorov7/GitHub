@@ -1,0 +1,11 @@
+#block {
+    width: 450px;
+    position: absolute;
+    top: 10%;
+    left: 35%;
+}
+
+#eroor {
+    color: red;
+    margin: 15px 0 25px 5px;
+}

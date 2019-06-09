@@ -1,0 +1,36 @@
+.container {
+    width: 100%;
+    height: 70px;
+    position: relative;
+    flex-direction: column;
+}
+
+table{
+    width: 450px;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+thead tr th, tbody tr td {
+    text-align: left;
+    padding: 10px 77px 10px 10px;
+}
+
+th, td {
+    padding: 3px;
+    border-bottom: 1px solid black;
+}
+
+th {
+    background: rgb(240, 240, 240);
+}
+
+#right {
+    padding: 0;
+    text-align: right;
+}
+
+ button{
+    background: rgb(253, 253, 253);
+    border: none;
+}
